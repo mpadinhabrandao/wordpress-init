@@ -1,0 +1,49 @@
+version: '3.1'
+
+services:
+
+  wordpress:
+    build: .
+    ports:
+      - 80:80
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: exampleuser
+      WORDPRESS_DB_PASSWORD: examplepass
+      WORDPRESS_DB_NAME: exampledb
+    volumes:
+      - ./wp:/var/www/html
+
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: exampledb
+      MYSQL_USER: exampleuser
+      MYSQL_PASSWORD: examplepass
+      MYSQL_ROOT_PASSWORD: rootpass
+    volumes:
+      - db_data:/var/lib/mysql
+
+  cli:
+    image: wordpress:cli
+    user: '33'
+    environment:
+      HOME: /tmp
+    volumes:
+      - ./wp:/var/www/html
+
+  phpmyadmin:
+      image: phpmyadmin/phpmyadmin:4.8.0-3
+      ports: 
+        - 9998:80
+      environment: 
+        - PMA_HOST=db
+        - PMA_USER=root
+        - PMA_PASSWORD=rootpass
+volumes:
+    db_data:
+
+# docker-compose run --rm cli core update
+# docker-compose run --rm cli plugin install woocommerce --activate
+# docker-compose run --rm cli theme install storefront --activate
+# docker-compose run --rm cli theme update storefront
