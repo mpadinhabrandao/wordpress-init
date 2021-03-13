@@ -42,8 +42,3 @@ services:
         - PMA_PASSWORD=rootpass
 volumes:
     db_data:
-
-# docker-compose run --rm cli core update
-# docker-compose run --rm cli plugin install woocommerce --activate
-# docker-compose run --rm cli theme install storefront --activate
-# docker-compose run --rm cli theme update storefront
